@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Страница 2{% endblock %}
+{% block content %}
+    <style>
+        .special-text {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            color: darkred;
+        }
+        .description {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 2;
+        }
+    </style>
+
+    <h1 class="special-text">Страница 2</h1>
+    <p class="description">
+        Это текст с изменёнными шрифтами и размерами.
+        Он должен отличаться от обычного текста на других страницах.
+    </p>
+{% endblock %}

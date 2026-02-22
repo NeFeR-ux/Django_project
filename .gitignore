@@ -1,0 +1,21 @@
+# Виртуальное окружение
+djskvenv/
+venv/
+env/
+
+# База данных
+*.sqlite3
+*.db
+
+# Кэш Python
+__pycache__/
+*.pyc
+
+# Файлы IDE
+.idea/
+.vscode/
+
+# Django
+*.log
+local_settings.py
+media/
