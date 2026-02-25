@@ -1,0 +1,112 @@
+# 1. Создать двух пользователей
+user1 = User.objects.create_user('john_doe')
+user2 = User.objects.create_user('jane_smith')
+
+# 2. Создать два объекта модели Author
+author1 = Author.objects.create(user=user1)
+author2 = Author.objects.create(user=user2)
+
+# 3. Добавить 4 категории
+category1 = Category.objects.create(name='Спорт')
+category2 = Category.objects.create(name='Политика')
+category3 = Category.objects.create(name='Образование')
+category4 = Category.objects.create(name='Технологии')
+
+# 4. Добавить 2 статьи и 1 новость
+post1 = Post.objects.create(
+    author=author1,
+    post_type=Post.ARTICLE,
+    title='Как стать программистом',
+    text='Полное руководство по входу в IT. Очень длинный текст...'
+)
+
+post2 = Post.objects.create(
+    author=author2,
+    post_type=Post.ARTICLE,
+    title='Будущее искусственного интеллекта',
+    text='Анализ развития AI технологий и их влияние на общество...'
+)
+
+post3 = Post.objects.create(
+    author=author1,
+    post_type=Post.NEWS,
+    title='Новый рекорд в спорте',
+    text='Спортсмен установил мировой рекорд в беге на 100 метров...'
+)
+
+# 5. Присвоить им категории (в одной статье 2 категории)
+PostCategory.objects.create(post=post1, category=category3)  # Образование
+PostCategory.objects.create(post=post1, category=category4)  # Технологии (2 категории)
+
+PostCategory.objects.create(post=post2, category=category4)  # Технологии
+PostCategory.objects.create(post=post3, category=category1)  # Спорт
+
+# 6. Создать 4 комментария к разным объектам
+comment1 = Comment.objects.create(
+    post=post1,
+    user=user2,
+    text='Отличная статья, очень помогла!'
+)
+
+comment2 = Comment.objects.create(
+    post=post1,
+    user=user1,
+    text='Спасибо за подробный материал'
+)
+
+comment3 = Comment.objects.create(
+    post=post2,
+    user=user1,
+    text='Интересное мнение о будущем AI'
+)
+
+comment4 = Comment.objects.create(
+    post=post3,
+    user=user2,
+    text='Поздравляю спортсмена с победой!'
+)
+
+# 7. Применить like() и dislike() к статьям
+post1.like()    # +1 к статье 1
+post1.like()    # +1 к статье 1
+post1.dislike() # -1 к статье 1 (итог: +1)
+
+post2.like()    # +1 к статье 2
+post2.like()    # +1 к статье 2
+post2.like()    # +1 к статье 2 (итог: +3)
+
+post3.like()    # +1 к новости
+
+# 8. Применить like() и dislike() к комментариям
+comment1.like()   # +1
+comment1.like()   # +1 (итог: +2)
+comment2.like()   # +1
+comment3.dislike() # -1
+comment4.like()   # +1
+
+# 9. Обновить рейтинги пользователей
+author1.update_rating()
+author2.update_rating()
+
+# 10. Вывести username и рейтинг лучшего пользователя
+best_author = Author.objects.order_by('-rating').first()
+print(f"Лучший пользователь: {best_author.user.username}, Рейтинг: {best_author.rating}")
+
+# 11. Вывести дату, автора, рейтинг, заголовок и превью лучшей статьи
+best_post = Post.objects.order_by('-rating').first()
+print(f"\nЛучшая статья:")
+print(f"Дата: {best_post.created_at}")
+print(f"Автор: {best_post.author.user.username}")
+print(f"Рейтинг: {best_post.rating}")
+print(f"Заголовок: {best_post.title}")
+print(f"Превью: {best_post.preview()}")
+
+# 12. Вывести все комментарии к лучшей статье
+print(f"\nВсе комментарии к статье '{best_post.title}':")
+comments = Comment.objects.filter(post=best_post)
+for comment in comments:
+    print(f"Дата: {comment.created_at}")
+    print(f"Пользователь: {comment.user.username}")
+    print(f"Рейтинг: {comment.rating}")
+    print(f"Текст: {comment.text}")
+    print("-" * 30)
