@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}{{ news.title|censor }}{% endblock %}
+
+{% block content %}
+    <h1>{{ news.title|censor }}</h1>
+    <p class="date">{{ news.created_at|date:"d.m.Y" }}</p>
+    <hr>
+    <p>{{ news.text|censor|linebreaks }}</p>
+    
+    <div class="back-link">
+        <a href="{% url 'news_list' %}">← Назад к списку новостей</a>
+    </div>
+{% endblock %}
