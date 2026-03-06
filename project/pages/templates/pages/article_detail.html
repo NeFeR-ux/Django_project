@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}{{ article.title|censor }}{% endblock %}
+
+{% block content %}
+    <h1>{{ article.title|censor }}</h1>
+    <p class="date">{{ article.created_at|date:"d.m.Y" }} | Автор: {{ article.author.user.username }}</p>
+    <hr>
+    <p>{{ article.text|censor|linebreaks }}</p>
+    
+    <div>
+        <a href="{% url 'article_edit' article.id %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'article_delete' article.id %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'article_list' %}">← Назад к списку</a>
+    </div>
+{% endblock %}

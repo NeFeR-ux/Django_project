@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
+from mmap import PAGESIZE
 from pathlib import Path
 
 from django.conf.global_settings import STATICFILES_DIRS
@@ -45,7 +46,10 @@ INSTALLED_APPS = [
     'fpages',
     'pages',
     'bootstrap5',
+    'django_filters',
 ]
+
+PAGESIZE = 10
 
 SITE_ID = 1
 

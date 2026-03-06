@@ -1,0 +1,52 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}Поиск новостей{% endblock %}
+
+{% block content %}
+    <h1>Поиск новостей</h1>
+    
+    <div class="filter-form">
+        <form method="get">
+            {{ filter.form.as_p }}
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+    </div>
+    
+    <hr>
+    
+    <h2>Результаты поиска ({{ page_obj.paginator.count }})</h2>
+    
+    {% for news in page_obj %}
+        <div class="news-item">
+            <h3>
+                <a href="{% url 'news_detail' news.id %}">
+                    {{ news.title|censor }}
+                </a>
+            </h3>
+            <p class="date">{{ news.created_at|date:"d.m.Y" }} | Автор: {{ news.author.user.username }}</p>
+            <p>{{ news.text|censor|truncatechars:200 }}</p>
+        </div>
+    {% empty %}
+        <p>Новостей не найдено</p>
+    {% endfor %}
+    
+    <!-- Пагинация результатов поиска -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&{{ filter.data.urlencode }}">&laquo; Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}&{{ filter.data.urlencode }}">Предыдущая</a>
+            {% endif %}
+            
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&{{ filter.data.urlencode }}">Следующая</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&{{ filter.data.urlencode }}">Последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
