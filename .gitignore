@@ -1,0 +1,33 @@
+# Виртуальное окружение
+venv/
+env/
+.direnv/
+.virtualenv/
+*.pyvenv
+
+# Кэш Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Файлы IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Django
+*.log
+local_settings.py
+media/
+static_root/
+
+# Временные файлы
+*.bak
+*.tmp
+*.temp
