@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h2>Еженедельная рассылка: {{ category.name }}</h2>
+
+    <p>Новые статьи за последнюю неделю:</p>
+
+    <ul>
+        {% for post in new_posts %}
+        <li>
+            <strong>{{ post.title }}</strong><br>
+            {{ post.text|truncatechars:100 }}<br>
+            <a href="http://127.0.0.1:8000{% url 'news_detail' post.id %}">
+                Читать
+            </a>
+            <br><br>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <p>Вы получили это письмо, потому что подписаны на категорию "{{ category.name }}"</p>
+</body>
+</html>

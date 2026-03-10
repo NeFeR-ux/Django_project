@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.flatpages.models import FlatPage
-from .models import Post
+from .models import Post, Category, Author
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.models import Group
@@ -168,3 +167,17 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Post.objects.filter(post_type='AR')
+
+@login_required
+def subscribe_to_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.subscribers.add(request.user)
+    messages.success(request, f'Вы подписались на категорию "{category.name}"')
+    return redirect('news_list')
+
+@login_required
+def unsubscribe_from_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.subscribers.remove(request.user)
+    messages.success(request, f'Вы отписались от категории "{category.name}"')
+    return redirect('news_list')
