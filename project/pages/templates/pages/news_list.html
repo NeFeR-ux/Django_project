@@ -56,3 +56,9 @@
         </span>
     </div>
 {% endblock %}
+
+{% if user.is_authenticated %}
+    {% if not perms.pages.add_post %}
+        <a href="{% url 'become_author' %}" class="btn btn-info">Стать автором</a>
+    {% endif %}
+{% endif %}

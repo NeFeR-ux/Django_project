@@ -13,7 +13,16 @@ from django.contrib import messages
 from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
+from django.contrib.auth.models import Group
 
+
+@login_required
+def become_author(request):
+    """Функция для добавления пользователя в группу authors"""
+    authors_group = Group.objects.get(name='authors')
+    request.user.groups.add(authors_group)
+    messages.success(request, 'Теперь вы автор!')
+    return redirect('news_list')
 
 def page1(request):
     flatpage = get_object_or_404(FlatPage, url='/page1/')
