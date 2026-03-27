@@ -6,7 +6,7 @@ from .models import Post, Category, Author
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -84,6 +84,11 @@ class NewsCreateView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'pages/news_edit.html'
     success_url = reverse_lazy('news_list')
+    permission_required = ('pages.add_post',)
+
+    def handle_no_permission(self):
+        messages.error(self.request, 'У вас нет прав на создание новостей. Станьте автором!')
+        return redirect('news_list')
 
     def form_valid(self, form):
         form.instance.post_type = 'NW'

@@ -1,0 +1,17 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+    <h2>Регистрация</h2>
+    
+    <form method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    
+    <hr>
+    <h3>Зарегистрироваться через социальные сети</h3>
+    <a href="{% provider_login_url 'yandex' %}" class="btn btn-primary">
+        Яндекс
+    </a>
+{% endblock %}
