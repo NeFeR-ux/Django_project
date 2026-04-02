@@ -22,4 +22,5 @@ urlpatterns = [
     path('become-author/', views.become_author, name='become_author'),
     path('subscribe/<int:category_id>/', views.subscribe_to_category, name='subscribe'),
     path('unsubscribe/<int:category_id>/', views.unsubscribe_from_category, name='unsubscribe'),
+path('test-logging/', views.test_logging, name='test_logging'),
 ]

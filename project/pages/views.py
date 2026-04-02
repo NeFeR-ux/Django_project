@@ -13,6 +13,20 @@ from django.contrib import messages
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.models import Group
+from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger('django')
+
+
+def test_logging(request):
+    logger.debug("Это DEBUG сообщение")
+    logger.info("Это INFO сообщение")
+    logger.warning("Это WARNING сообщение")
+    logger.error("Это ERROR сообщение")
+    logger.critical("Это CRITICAL сообщение")
+
+    return HttpResponse("Логи записаны, проверь консоль и файлы")
 
 
 @login_required

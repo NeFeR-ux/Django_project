@@ -27,9 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a+%_@)&u*56w%&d98=g6m2+ay-po=x&v5#sgklhyl6*v&%i7c5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -160,6 +163,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your-email@gmail.com'
 EMAIL_HOST_PASSWORD = 'your-app-password'  # пароль приложения
+ADMINS = [('Admin', 'admin@example.com')]
+SERVER_EMAIL = 'your-email@gmail.com'
 DEFAULT_FROM_EMAIL = 'my-email@gmail.com'
 
 # Celery настройки
@@ -169,4 +174,112 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+# Настройки логирования
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console_debug': {
+            'format': '{asctime} - {levelname} - {message}',
+            'style': '{',
+        },
+        'console_warning': {
+            'format': '{asctime} - {levelname} - {message} - {pathname}',
+            'style': '{',
+        },
+        'console_error': {
+            'format': '{asctime} - {levelname} - {message} - {pathname} - {exc_info}',
+            'style': '{',
+        },
+        'general': {
+            'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
+        },
+        'errors': {
+            'format': '{asctime} - {levelname} - {message} - {pathname} - {exc_info}',
+            'style': '{',
+        },
+        'security': {
+            'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
+        },
+        'email': {
+            'format': '{asctime} - {levelname} - {message} - {pathname}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+        },
+        'general': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'general.log'),
+            'formatter': 'general',
+            'filters': ['require_debug_false'],
+        },
+        'errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'errors.log'),
+            'formatter': 'errors',
+        },
+        'security': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'security.log'),
+            'formatter': 'security',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'email',
+            'filters': ['require_debug_false'],
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'general'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['errors', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['errors'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['errors'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 

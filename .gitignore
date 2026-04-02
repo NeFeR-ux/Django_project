@@ -28,6 +28,7 @@ __pycache__/
 local_settings.py
 media/
 static_root/
+logs/
 
 # Временные файлы
 *.bak
